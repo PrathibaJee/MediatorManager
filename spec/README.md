@@ -1,5 +1,8 @@
 # MediatorManager Specification
 
+### Diagrams  
+- [Collection of Diagrams](./diagrams)
+
 ### ServiceList
 - [MediatorManager+services](./MediatorManager+services.yaml)
 
