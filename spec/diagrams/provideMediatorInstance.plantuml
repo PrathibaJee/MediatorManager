@@ -1,0 +1,94 @@
+@startuml CpMl6352
+skinparam responseMessageBelowArrow true
+
+title
+MediatorManager /v1/provide-mediator-instance
+end title
+
+participant "MountingOrchestrator" as MO
+participant "MediatorManager://v1/provide-mediator-instance" as MM
+database "MediatorManager:ConfigFile" as Config
+database "MediatorManager:APPDataFile" as AppData
+participant "MediatorInstanceManager://v1/provide-mediator-instance" as MIMList
+participant "MediatorInstanceManager://v1/provide-mediator-instance" as MIMList
+
+
+MO -> MM : 
+note right MO #PaleGreen
+    <b>RequestBody : 
+    <b>{
+    <b>    device-ip : x.x.x.x,
+    <b>    vendor-name : Ericsson,
+    <b>    device-model : ML6352
+    <b>}
+  end note
+activate MM
+Data --\\o EMl6352CP : <b>Read attributes from the configuration file
+note right EMl6352CP #LightSteelBlue
+ml6352_adminUserName
+ml6352_adminPassword
+ml6352_cliUserName
+ml6352_deviceUserName
+ml6352_devicePassword
+end note
+
+EMl6352CP -> EricssonMLTNDevice : <b>SSH to the device
+  note left EricssonMLTNDevice #LightSteelBlue
+    <b><u>Command</u> Ssh <ml6600_adminUserName>@<device-ip>
+    no password is required to proceed.
+  end note
+  note over EMl6352CP #orange
+    Could reach the device?
+  end note
+  note left EMl6352CP
+    NO
+  end note
+  MO <-- EMl6352CP : 532
+  note over EMl6352CP #orange
+    Could authenticate at device?
+  end note
+  note left EMl6352CP
+    NO
+  end note
+  MO <-- EMl6352CP : 531
+
+EMl6352CP -> EricssonMLTNDevice : <b>Enter the admin credentials for further login
+  note left EricssonMLTNDevice #LightSteelBlue
+    <b><u>Command</u>  no commands
+    Note : <ml6352_adminUserName> <ml6352_adminPassword> needs to be provided in the prompt
+  end note
+
+EMl6352CP -> EricssonMLTNDevice : <b>Switch to configuration/common/user
+  note left EricssonMLTNDevice #LightSteelBlue
+    <b><u>Command</u>  config common user
+  end note
+
+EMl6352CP -> EricssonMLTNDevice : <b>Create user
+  note left EricssonMLTNDevice #LightSteelBlue
+    <b><u>Command</u>  user <ml6352_deviceUserName> password <paml6352_devicePasswordssword> confirm-password <ml6352_devicePassword> role sys-admin
+  end note
+
+EMl6352CP -> EricssonMLTNDevice : <b>validate the created user            
+  note left EricssonMLTNDevice #LightSteelBlue
+    <b><u>Command</u>  users
+  end note
+  note over EMl6352CP #Orange
+    UserList.includes(ml6352_deviceUserName)?
+  end note
+  note left EMl6352CP
+    NO
+  end note
+  MO <-- EMl6352CP : 502
+
+EMl6352CP -> EricssonMLTNDevice : <b>exit the configuration mode
+  note left EricssonMLTNDevice #LightSteelBlue
+    <b><u>Command</u>  exit
+  end note
+
+EMl6352CP -> EricssonMLTNDevice : <b>close the SSH session
+
+MO <-- EMl6352CP : 204
+
+deactivate EMl6352CP
+
+@enduml

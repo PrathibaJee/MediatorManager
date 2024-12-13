@@ -43,33 +43,69 @@ servers:
         - operation-name: /docs
           uuid: mm-1-0-0-op-s-bs-005
       individual:
-        #create mediator kind for new device (output--> mediatorkindname - vendor - release )
-        - operation-name: /v1/create-mediator-kind
+        - operation-name: /v1/regard-mediator-vm
           uuid: mm-1-0-0-op-s-is-000
-        #delete mediator kind for old devices to be removed (output--> responsecode )
-        - operation-name: /v1/delete-mediator-kind
+          input:
+            mediator-vm-name # Name of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name] + included to appData
+            mediator-release-number # release of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]
+            protocol # Protocol to be used for addressing the MediatorInstanceManager update or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]
+            address # ip-address/domain-name to be used for addressing the MediatorInstanceManager update or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address]
+            port # Protocol to be used for addressing the MediatorInstanceManager update or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]
+            vendor-name # included to the appData
+            supported-device-kind # anyOf(MLTN,ML6600,ML6352,AGS20,AGS20L,ALCP2E,ALFO,RTN-950,RTN-905,RTN-380A) included to the appData
+            engineering-limits # included to the appData
+          output:
+            204 : NoContent
+            400 : BadRequest
+            500 : InternalServerError
+        - operation-name: /v1/disregard-mediator-vm
           uuid: mm-1-0-0-op-s-is-001
-        #create pairing definition for new devices (output--> devicekindname - mediatorkindname )
-        - operation-name: /v1/create-pairing-definition
+          input:
+            mediator-vm-name # Name of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, and delete [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name] and dependencies in the config + appData.
+            mediator-release-number # release of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, and delete [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]
+          output:
+            204 : NoContent
+            400 : BadRequest
+            500 : InternalServerError
+        - operation-name: /v1/list-mediator-vm
           uuid: mm-1-0-0-op-s-is-002
-        #delete pairing definition for old devices to be removed (output--> responsecode )
-        - operation-name: /v1/delete-pairing-definition
+          input:
+            supported-device-kind # Name of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, and delete [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name] and dependencies in the config + appData.
+          output:
+            200 : OK
+              mediator-vm-name # Name of a MediatorInstanceManager application find in, but not at OldRelease or NewRelease [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]
+              mediator-release-number # release of a MediatorInstanceManager application find in, but not at OldRelease or NewRelease [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]
+              protocol # Protocol to be used for addressing the MediatorInstanceManager find in [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]
+              address # ip-address/domain-name to be used for addressing the MediatorInstanceManager find in [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address]
+              port # Protocol to be used for addressing the MediatorInstanceManager find in [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]
+              vendor-name # from appData
+              supported-device-kind # anyOf(MLTN,ML6600,ML6352,AGS20,AGS20L,ALCP2E,ALFO,RTN-950,RTN-905,RTN-380A) from appData
+              engineering-limits # from appData
+            400 : BadRequest
+            500 : InternalServerError
+        - operation-name: /v1/provide-mediator-instance
           uuid: mm-1-0-0-op-s-is-003
-        #export pairing definition
-        - operation-name: /v1/export-pairing-definition
+          input: 
+            device-ip
+            vendor-name
+            device-model
+          output:
+            200 : OK
+              mediator-ip-address
+              netconf-port 
+            507 : Insufficient Storage  #[Query1]If engineering limits exceeds
+            400 : BadRequest
+            500 : InternalServerError        
+        - operation-name: /v1/dismantle-mediator-instance
           uuid: mm-1-0-0-op-s-is-004
-        #provide mediator name and ip for the device (output--> netconfaddres,mediatorname )
-        - operation-name: /v1/provide-mediator-for-this-device
-          uuid: mm-1-0-0-op-s-is-005
-        #remove mediator for the device (output -->responsecode)
-        - operation-name: /v1/dismantle-mediator-for-this-device
-          uuid: mm-1-0-0-op-s-is-006
-        #export mediator kind list (output--> list )
-        - operation-name: /v1/export-mediator-kind-list
-          uuid: mm-1-0-0-op-s-is-007
-        #export mediator device instance list (output--> list )
-        - operation-name: /v1/export-mediator-device-instance-list
-          uuid: mm-1-0-0-op-s-is-008
+          input: 
+            device-ip
+            vendor-name
+            device-model
+          output:
+            204 #NoContent
+            400 #BadRequest
+            500 #InternalServerError
 
   http-server:
     own-application-name: MediatorManager
@@ -273,24 +309,6 @@ clients:
         basic:
         individual:
 
-
-  - http-client:
-      application-name: xMediatorInstanceManager
-      release-number: 1.0.0
-      uuid: mm-1-0-0-http-c-xmim-1-0-0-000
-    tcp-client:
-      remote-protocol: http
-      ip-address: 1.1.2.1
-      tcp-port: 2001
-      uuid: mm-1-0-0-tcp-c-xmim-1-0-0-000
-    operation-clients:
-      own-oam:
-        basic:
-        individual:
-      service:
-        basic:
-        individual:
-
   - http-client:
       application-name: EricssonMediatorInstanceManager
       release-number: 1.0.0
@@ -334,23 +352,6 @@ clients:
       ip-address: 1.1.2.4
       tcp-port: 2004
       uuid: mm-1-0-0-tcp-c-smim-1-0-0-000
-    operation-clients:
-      own-oam:
-        basic:
-        individual:
-      service:
-        basic:
-        individual:
-
-  - http-client:
-      application-name: ZteMediatorInstanceManager
-      release-number: 1.0.0
-      uuid: mm-1-0-0-http-c-zmim-1-0-0-000
-    tcp-client:
-      remote-protocol: http
-      ip-address: 1.1.2.5
-      tcp-port: 2005
-      uuid: mm-1-0-0-tcp-c-zmim-1-0-0-000
     operation-clients:
       own-oam:
         basic:
