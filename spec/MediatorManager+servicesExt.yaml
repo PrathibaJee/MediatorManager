@@ -25,15 +25,6 @@ servers:
           uuid: mm-1-0-0-op-s-bm-010
         - operation-name: /v1/update-operation-client
           uuid: mm-1-0-0-op-s-bm-011
-        - operation-name: /v1/inquire-basic-auth-approvals
-          uuid: mm-1-0-0-op-s-bm-012
-        - operation-name: /v1/dispose-remainders-of-deregistered-application
-          uuid: mm-1-0-0-op-s-bm-013
-        - operation-name: /v1/inform-about-preceding-release
-          uuid: mm-1-0-0-op-s-bm-014
-          operation-key: n.a.
-        - operation-name: /v1/update-client-of-subsequent-release
-          uuid: mm-1-0-0-op-s-bm-015
       individual:
         - operation-name: /v1/bequeath-your-data-and-die
           uuid: mm-1-0-0-op-s-im-000
@@ -41,51 +32,97 @@ servers:
       basic:
         - operation-name: /v1/start-application-in-generic-representation
           uuid: mm-1-0-0-op-s-bs-000
-          operation-key: n.a.
         - operation-name: /v1/inform-about-application
           uuid: mm-1-0-0-op-s-bs-001
-          operation-key: n.a.
         - operation-name: /v1/inform-about-application-in-generic-representation
           uuid: mm-1-0-0-op-s-bs-002
-          operation-key: n.a.
         - operation-name: /v1/inform-about-release-history
           uuid: mm-1-0-0-op-s-bs-003
-          operation-key: n.a.
         - operation-name: /v1/inform-about-release-history-in-generic-representation
           uuid: mm-1-0-0-op-s-bs-004
-          operation-key: n.a.
         - operation-name: /docs
           uuid: mm-1-0-0-op-s-bs-005
-          operation-key: n.a.
       individual:
         - operation-name: /v1/regard-mediator-vm
           uuid: mm-1-0-0-op-s-is-000
+          input:
+            mediator-vm-name # Name of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name] + included to appData
+            mediator-release-number # release of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]
+            protocol # Protocol to be used for addressing the MediatorInstanceManager update or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]
+            address # ip-address/domain-name to be used for addressing the MediatorInstanceManager update or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address]
+            port # Protocol to be used for addressing the MediatorInstanceManager update or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]
+            vendor-name # included to the appData
+            supported-device-kind # anyOf(MLTN,ML6600,ML6352,AGS20,AGS20L,ALCP2E,ALFO,RTN-950,RTN-905,RTN-380A) included to the appData
+            engineering-limits # included to the appData
+          output:
+            204 : NoContent
+            400 : BadRequest
+            500 : InternalServerError
         - operation-name: /v1/disregard-mediator-vm
           uuid: mm-1-0-0-op-s-is-001
+          input:
+            mediator-vm-name # Name of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, and delete [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name] and dependencies in the config + appData.
+            mediator-release-number # release of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, and delete [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]
+          output:
+            204 : NoContent
+            400 : BadRequest
+            500 : InternalServerError
         - operation-name: /v1/list-mediator-vm
           uuid: mm-1-0-0-op-s-is-002
+          input:
+            supported-device-kind # Name of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, and delete [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name] and dependencies in the config + appData.
+          output:
+            200 : OK
+              mediator-vm-name # Name of a MediatorInstanceManager application find in, but not at OldRelease or NewRelease [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]
+              mediator-release-number # release of a MediatorInstanceManager application find in, but not at OldRelease or NewRelease [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]
+              protocol # Protocol to be used for addressing the MediatorInstanceManager find in [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]
+              address # ip-address/domain-name to be used for addressing the MediatorInstanceManager find in [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address]
+              port # Protocol to be used for addressing the MediatorInstanceManager find in [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]
+              vendor-name # from appData
+              supported-device-kind # anyOf(MLTN,ML6600,ML6352,AGS20,AGS20L,ALCP2E,ALFO,RTN-950,RTN-905,RTN-380A) from appData
+              engineering-limits # from appData
+            400 : BadRequest
+            500 : InternalServerError
         - operation-name: /v1/provide-mediator-instance
-          uuid: mm-1-0-0-op-s-is-003      
+          uuid: mm-1-0-0-op-s-is-003
+          input: 
+            device-ip
+            vendor-name
+            device-model
+          output:
+            200 : OK
+              mediator-instance-ip-address
+              mediator-instance-netconf-port 
+            507 : Insufficient Storage  #[Query1]If engineering limits exceeds
+            400 : BadRequest
+            500 : InternalServerError        
         - operation-name: /v1/dismantle-mediator-instance
           uuid: mm-1-0-0-op-s-is-004
+          input: 
+            device-ip
+            vendor-name
+            device-model
+          output:
+            204 #NoContent
+            400 #BadRequest
+            500 #InternalServerError
 
   http-server:
     own-application-name: MediatorManager
     own-release-number: 1.0.0
     uuid: mm-1-0-0-http-s-000
-    application-purpose: Preparing the connection between device and mediator/controller
-    owner-name: Andreas Haack
-    owner-email-address: Andreas.Haack@telefonica.com
-    release-list:
-      - release-number: 1.0.0
-        release-date: 12.12.2024
-        changes: Initial version
   tcp-server:
     - description: Without TLS layer
       local-protocol: http
       own-ip-address: 1.1.4.6
       own-tcp-port: 4006
       uuid: mm-1-0-0-tcp-s-000
+    - description: With TLS layer
+      local-protocol: https
+      own-ip-address: 1.2.4.6
+      own-tcp-port: 4206
+      uuid: mm-1-0-0-tcp-s-001
+
 
 clients:
 
@@ -121,8 +158,8 @@ clients:
       own-oam:
         basic:
         individual:
-          - operation-name: /v1/regard-mediator-vm
-            uuid: mm-1-0-0-op-c-im-nr-1-0-0-000
+          operation-name: /v1/create-mediator-kind
+          uuid: mm-1-0-0-op-s-is-000
       service:
         basic:
         individual:
@@ -153,6 +190,23 @@ clients:
         individual:
 
   - http-client:
+      application-name: TypeApprovalRegister
+      release-number: 2.0.1
+      uuid: mm-1-0-0-http-c-tar-2-0-1-000
+    tcp-client:
+      remote-protocol: http
+      ip-address: 1.1.3.9
+      tcp-port: 3009
+      uuid: mm-1-0-0-tcp-c-tar-2-0-1-000
+    operation-clients:
+      own-oam:
+        basic:
+        individual:
+      service:
+        basic:
+        individual:
+
+  - http-client:
       application-name: ExecutionAndTraceLog
       release-number: 2.0.1
       uuid: mm-1-0-0-http-c-eatl-2-0-1-000
@@ -166,7 +220,6 @@ clients:
         basic:
           - operation-name: /v1/record-service-request
             uuid: mm-1-0-0-op-c-bs-eatl-2-0-1-000
-            detailed-logging-is-on: false
         individual:
       service:
         basic:
@@ -240,6 +293,23 @@ clients:
         individual:
 
   - http-client:
+      application-name: OperationKeyManagement
+      release-number: 2.0.1
+      uuid: mm-1-0-0-http-c-okm-2-0-1-000
+    tcp-client:
+      remote-protocol: http
+      ip-address: 1.1.3.14
+      tcp-port: 3014
+      uuid: mm-1-0-0-tcp-c-okm-2-0-1-000
+    operation-clients:
+      own-oam:
+        basic:
+        individual:
+      service:
+        basic:
+        individual:
+
+  - http-client:
       application-name: EricssonMediatorInstanceManager
       release-number: 1.0.0
       uuid: mm-1-0-0-http-c-emim-1-0-0-000
@@ -255,12 +325,6 @@ clients:
       service:
         basic:
         individual:
-          - operation-name: /v1/list-mediator-instances
-            uuid: mm-1-0-0-op-c-is-emim-1-0-0-000
-          - operation-name: /v1/provide-mediator-instance
-            uuid: mm-1-0-0-op-c-is-emim-1-0-0-001
-          - operation-name: /v1/dismantle-mediator-instance
-            uuid: mm-1-0-0-op-c-is-emim-1-0-0-002
 
   - http-client:
       application-name: HuaweiMediatorInstanceManager
@@ -278,12 +342,6 @@ clients:
       service:
         basic:
         individual:
-          - operation-name: /v1/list-mediator-instances
-            uuid: mm-1-0-0-op-c-is-hmim-1-0-0-000
-          - operation-name: /v1/provide-mediator-instance
-            uuid: mm-1-0-0-op-c-is-hmim-1-0-0-001
-          - operation-name: /v1/dismantle-mediator-instance
-            uuid: mm-1-0-0-op-c-is-hmim-1-0-0-002
 
   - http-client:
       application-name: SiaeMediatorInstanceManager
@@ -301,9 +359,3 @@ clients:
       service:
         basic:
         individual:
-          - operation-name: /v1/list-mediator-instances
-            uuid: mm-1-0-0-op-c-is-smim-1-0-0-000
-          - operation-name: /v1/provide-mediator-instance
-            uuid: mm-1-0-0-op-c-is-smim-1-0-0-001
-          - operation-name: /v1/dismantle-mediator-instance
-            uuid: mm-1-0-0-op-c-is-smim-1-0-0-002

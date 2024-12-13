@@ -9,8 +9,10 @@ participant "MountingOrchestrator" as MO
 participant "MediatorManager://v1/provide-mediator-instance" as MM
 database "MediatorManager:ConfigFile" as Config
 database "MediatorManager:APPDataFile" as AppData
-participant "MediatorInstanceManager://v1/provide-mediator-instance" as MIMList
-participant "MediatorInstanceManager://v1/provide-mediator-instance" as MIMList
+participant "EricssonMediatorInstanceManagerA://v1/provide-mediator-instance" as MIMListA
+participant "EricssonMediatorInstanceManagerA://v1/provide-mediator-instance" as MIMProvideA
+participant "EricssonMediatorInstanceManagerB://v1/provide-mediator-instance" as MIMListB
+participant "EricssonMediatorInstanceManagerB://v1/provide-mediator-instance" as MIMProvideB
 
 
 MO -> MM : 
@@ -23,72 +25,101 @@ note right MO #PaleGreen
     <b>}
   end note
 activate MM
-Data --\\o EMl6352CP : <b>Read attributes from the configuration file
-note right EMl6352CP #LightSteelBlue
-ml6352_adminUserName
-ml6352_adminPassword
-ml6352_cliUserName
-ml6352_deviceUserName
-ml6352_devicePassword
+
+Config --\\o MM : <b>Read attributes from the configuration file
+note right MM #LightSteelBlue
+<b>allocationMethodType from profile Instance
+<b>List of Mediator VM Instances from the LogicalTerminationPoint
 end note
 
-EMl6352CP -> EricssonMLTNDevice : <b>SSH to the device
-  note left EricssonMLTNDevice #LightSteelBlue
-    <b><u>Command</u> Ssh <ml6600_adminUserName>@<device-ip>
-    no password is required to proceed.
-  end note
-  note over EMl6352CP #orange
-    Could reach the device?
-  end note
-  note left EMl6352CP
-    NO
-  end note
-  MO <-- EMl6352CP : 532
-  note over EMl6352CP #orange
-    Could authenticate at device?
-  end note
-  note left EMl6352CP
-    NO
-  end note
-  MO <-- EMl6352CP : 531
+AppData --\\o MM : <b>Read attributes from the AppData file
+note right MM #LightSteelBlue
+<b>mediator-vm-name
+<b>vendor-name
+<b>supported-device-kind
+<b>engineering-limits
+end note
 
-EMl6352CP -> EricssonMLTNDevice : <b>Enter the admin credentials for further login
-  note left EricssonMLTNDevice #LightSteelBlue
-    <b><u>Command</u>  no commands
-    Note : <ml6352_adminUserName> <ml6352_adminPassword> needs to be provided in the prompt
-  end note
+ 
+note over MM 
+<b>Filter Mediator VMs that supports the vendor + device-model
+end note
+note over MM #orange
+<b>If allocationMethodType == NONE ?
+end note
 
-EMl6352CP -> EricssonMLTNDevice : <b>Switch to configuration/common/user
-  note left EricssonMLTNDevice #LightSteelBlue
-    <b><u>Command</u>  config common user
+MM -> MIMListA : get the list of mediator Instances from EricssonMediatorInstanceManagerA
+MIMListA -> MM: 200 OK
+  note right MM
+    [
+    {
+        "device-name": "MountName",
+        "device-kind-name": "ML_6352",
+        "mediator-instance-ip-address": "1.1.1.1",
+        "mediator-instance-netconf-port": 1,
+        "device-ip-address": "1.2.3.4"
+    }
+    ]
   end note
-
-EMl6352CP -> EricssonMLTNDevice : <b>Create user
-  note left EricssonMLTNDevice #LightSteelBlue
-    <b><u>Command</u>  user <ml6352_deviceUserName> password <paml6352_devicePasswordssword> confirm-password <ml6352_devicePassword> role sys-admin
+  note over MM #orange
+    <b>If MediatorInstanceCount >= engineering-limits ?
   end note
-
-EMl6352CP -> EricssonMLTNDevice : <b>validate the created user            
-  note left EricssonMLTNDevice #LightSteelBlue
-    <b><u>Command</u>  users
+  note over MM #orange
+    YES
   end note
-  note over EMl6352CP #Orange
-    UserList.includes(ml6352_deviceUserName)?
-  end note
-  note left EMl6352CP
-    NO
-  end note
-  MO <-- EMl6352CP : 502
-
-EMl6352CP -> EricssonMLTNDevice : <b>exit the configuration mode
-  note left EricssonMLTNDevice #LightSteelBlue
-    <b><u>Command</u>  exit
+  note over MM
+    Checks the next eligible mediator
   end note
 
-EMl6352CP -> EricssonMLTNDevice : <b>close the SSH session
+MM -> MIMListB : get the list of mediator Instances from EricssonMediatorInstanceManagerB
+MIMListB -> MM : 200 OK
+  note right MM
+    [
+    {
+        "device-name": "MountName",
+        "device-kind-name": "ML_6352",
+        "mediator-instance-ip-address": "1.1.1.1",
+        "mediator-instance-netconf-port": 1,
+        "device-ip-address": "1.2.3.4"
+    }
+    ]
+  end note
+  note over MM #orange
+    If MediatorInstanceCount >= engineering-limits ?
+  end note
+  note over MM #orange
+    YES
+  end note
 
-MO <-- EMl6352CP : 204
+MM -> MO : 507 Insufficient Storage
+ 
+note over MM #orange
+Else
+end note
 
-deactivate EMl6352CP
+MM -> MIMProvideB : creates new mediator instance
+  note left MIMProvideB
+    {
+  "device-name": "305251234",
+  "device-ip-address": "10.118.133.1",
+  "device-kind-name": "AGS_20"
+    }
+  end note
+
+MIMProvideB ->  MM : 200 OK
+    note right MM
+    {
+    "mediator-instance-ip-address": "10.118.132.1",
+    "mediator-instance-netconf-port": 1
+    }
+    end note
+
+MM -> MO : 200 OK
+    note left MM
+    {
+    "mediator-instance-ip-address": "10.118.132.1",
+    "mediator-instance-netconf-port": 1
+    }
+    end note
 
 @enduml
