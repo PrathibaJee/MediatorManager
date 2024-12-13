@@ -442,7 +442,11 @@ forwardings:
         uuid: mm-1-0-0-op-s-is-003
     consequent-requests:
       - client-name: MediatorInstanceManager://v1/list-mediator-instances
-        uuid: mm-1-0-0-op-c-is-mimxx-1-0-0-000
+        uuid: mm-1-0-0-op-c-is-smim-1-0-0-000
+      - client-name: MediatorInstanceManager://v1/list-mediator-instances
+        uuid: mm-1-0-0-op-c-is-hmim-1-0-0-000
+      - client-name: MediatorInstanceManager://v1/list-mediator-instances
+        uuid: mm-1-0-0-op-c-is-emim-1-0-0-000
 
   - forwarding-name: ProvideMediatorInstanceCreatesMediatorInstance
     uuid: mm-1-0-0-op-fc-is-002
@@ -461,7 +465,11 @@ forwardings:
         uuid: mm-1-0-0-op-s-is-003
     consequent-requests:
       - client-name: MediatorInstanceManager://v1/provide-mediator-instance
-        uuid: mm-1-0-0-op-c-is-mimxx-1-0-0-001
+        uuid: mm-1-0-0-op-c-is-smim-1-0-0-001
+      - client-name: MediatorInstanceManager://v1/provide-mediator-instance
+        uuid: mm-1-0-0-op-c-is-hmim-1-0-0-001
+      - client-name: MediatorInstanceManager://v1/provide-mediator-instance
+        uuid: mm-1-0-0-op-c-is-emim-1-0-0-001
 
   - forwarding-name: DismantleMediatorInstanceDeletesMediatorInstance
     uuid: mm-1-0-0-op-fc-is-003
@@ -480,7 +488,11 @@ forwardings:
         uuid: mm-1-0-0-op-s-is-003
     consequent-requests:
       - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance
-        uuid: mm-1-0-0-op-c-is-mimxx-1-0-0-002
+        uuid: mm-1-0-0-op-c-is-smim-1-0-0-002
+      - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance
+        uuid: mm-1-0-0-op-c-is-hmimxx-1-0-0-002
+      - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance
+        uuid: mm-1-0-0-op-c-is-emim-1-0-0-002
 
   - forwarding-name: PromptForBequeathingRegardsMediatorVmToNewRelease
     uuid: mm-1-0-0-op-fc-im-000

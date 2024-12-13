@@ -95,8 +95,8 @@ clients:
       uuid: mm-1-0-0-http-c-or-1-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address:
-      tcp-port:
+      ip-address: 1.1.4.6
+      tcp-port: 3007
       uuid: mm-1-0-0-tcp-c-or-1-0-0-000
     operation-clients:
       own-oam:
