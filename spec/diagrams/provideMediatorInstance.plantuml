@@ -1,4 +1,4 @@
-@startuml CpMl6352
+@startuml MediatorManager
 skinparam responseMessageBelowArrow true
 
 title
