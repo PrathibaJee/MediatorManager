@@ -14,6 +14,18 @@ participant "EricssonMediatorInstanceManagerA://v1/provide-mediator-instance" as
 participant "EricssonMediatorInstanceManagerB://v1/provide-mediator-instance" as MIMListB
 participant "EricssonMediatorInstanceManagerB://v1/provide-mediator-instance" as MIMProvideB
 
+note over Config
+Profile: allocationMethodType 
+('EQUAL_UTILIZATION', 'LATEST_RELEASE_FIRST', 'NONE')
+end note
+
+note over AppData
+1. mediator-vm-name
+2. vendor-name
+3. supported-device-kind (MLTN,ML6600,ML6352,
+AGS20,AGS20L,ALCP2E,ALFO,RTN-950,RTN-905,RTN-380A)
+4. engineering-limits
+end note
 
 MO -> MM : 
 note right MO #PaleGreen
