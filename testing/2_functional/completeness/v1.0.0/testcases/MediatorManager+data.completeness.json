@@ -1,0 +1,42 @@
+[
+	{
+		"mode": "debug",
+		"serverList": [
+			{
+				"serverName": "dummy",
+				"dummyUri": "ping.openBackhaul.com"
+			},
+			{
+				"serverName": "ConnectionPreparation",
+				"server": "http://127.0.0.1:4021",
+				"pathToControlConstruct": "",
+				"authorizationCode": "",
+				"operationKey": "Operation key not yet provided.",
+				"userName": "Thorsten Heinze",
+				"originator": "ConnectionPreparation+test.completeness",
+				"xCorrelator": "00000000-0000-0000-0000-000000000000",
+				"traceIndicator": "1",
+				"customerJourney": ""
+			},
+			{
+				"serverName": "ConnectionPreparation+simu.completeness",
+				"server": "http://localhost:3000",
+				"pathToControlConstruct": "",
+				"authorizationCode": "",
+				"operationKey": "Operation key not yet provided.",
+				"userName": "Thorsten Heinze",
+				"originator": "ConnectionPreparation+test.completeness",
+				"xCorrelator": "00000000-0000-0000-0000-000000000000",
+				"traceIndicator": "1",
+				"customerJourney": ""
+			}
+		],
+		"collectionInputList": [
+			{
+				"collectionName": "cp",
+				"serverToBeApplied": "ConnectionPreparation",
+				"deviceIp": "127.0.0.1"
+			}
+		]
+	}
+]
