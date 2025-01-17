@@ -46,7 +46,7 @@ servers:
         - operation-name: /v1/regard-mediator-vm
           uuid: mm-1-0-0-op-s-is-000
           input:
-            mediator-vm-name # Name of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name] + included to appData
+            application-name # Name of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name] + included to appData
             mediator-release-number # release of a MediatorInstanceManager application find, but not at OldRelease or NewRelease, or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]
             protocol # Protocol to be used for addressing the MediatorInstanceManager update or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]
             address # ip-address/domain-name to be used for addressing the MediatorInstanceManager update or create [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address]
@@ -86,6 +86,7 @@ servers:
         - operation-name: /v1/provide-mediator-instance
           uuid: mm-1-0-0-op-s-is-003
           input: 
+            device-name
             device-ip
             vendor-name
             device-model
@@ -99,9 +100,8 @@ servers:
         - operation-name: /v1/dismantle-mediator-instance
           uuid: mm-1-0-0-op-s-is-004
           input: 
-            device-ip
-            vendor-name
-            device-model
+            mediator-instance-ip-address
+            mediator-instance-netconf-port
           output:
             204 #NoContent
             400 #BadRequest
