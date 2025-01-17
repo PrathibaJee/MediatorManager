@@ -1,6 +1,25 @@
 forwardings:
 
   - forwarding-name: PromptForRegisteringCausesRegistrationRequest
+    uuid: mm-1-0-0-op-fc-bm-999
+    forwarding-type: InvariantProcessSnippet
+    management-requests:
+      operation-client-update:
+        - server-name: /v1/register-yourself
+          uuid: mm-1-0-0-op-s-bm-000
+      fc-port-update:
+        - server-name: /v1/register-yourself
+          uuid: mm-1-0-0-op-s-bm-000
+      fc-port-deletion:
+      operation-client-deletion:
+    initiating-requests:
+      - server-name: /v1/register-yourself
+        uuid: mm-1-0-0-op-s-bm-000
+    consequent-requests:
+      - client-name: RegistryOffice://v2/register-application
+        uuid: mm-1-0-0-op-c-bm-ro-2-1-2-000
+
+  - forwarding-name: PromptForRegisteringCausesRegistrationRequest2
     uuid: mm-1-0-0-op-fc-bm-000
     forwarding-type: InvariantProcessSnippet
     management-requests:
@@ -16,8 +35,8 @@ forwardings:
       - server-name: /v1/register-yourself
         uuid: mm-1-0-0-op-s-bm-000
     consequent-requests:
-      - client-name: RegistryOffice://v1/register-application
-        uuid: mm-1-0-0-op-c-bm-ro-2-0-1-000
+      - client-name: RegistryOffice://v2/register-application
+        uuid: mm-1-0-0-op-c-bm-ro-2-1-2-000
 
   - forwarding-name: PromptForEmbeddingCausesRequestForBequeathingData
     uuid: mm-1-0-0-op-fc-bm-001
@@ -69,6 +88,14 @@ forwardings:
         uuid: mm-1-0-0-op-s-bm-010
       - server-name: /v1/update-operation-client
         uuid: mm-1-0-0-op-s-bm-011
+      - server-name: /v1/inquire-basic-auth-approvals
+        uuid: mm-1-0-0-op-s-bm-012
+      - server-name: /v1/dispose-remainders-of-deregistered-application
+        uuid: mm-1-0-0-op-s-bm-013
+      - server-name: /v1/inform-about-preceding-release
+        uuid: mm-1-0-0-op-s-bm-014
+      - server-name: /v1/update-client-of-subsequent-release
+        uuid: mm-1-0-0-op-s-bm-015
       - server-name: /v1/bequeath-your-data-and-die
         uuid: mm-1-0-0-op-s-im-000
       - server-name: /v1/start-application-in-generic-representation
@@ -83,28 +110,19 @@ forwardings:
         uuid: mm-1-0-0-op-s-bs-004
       - server-name: /docs
         uuid: mm-1-0-0-op-s-bs-005
-      - server-name: /v1/create-mediator-kind
-        uuid: mm-1-0-0-op-s-is-000
-      - server-name: /v1/delete-mediator-kind
+      - server-name: /v1/regard-mediator-instance-manager
+        uuid: mm-1-0-0-op-s-im-000
+      - server-name: /v1/disregard-mediator-instance-manager
+        uuid: mm-1-0-0-op-s-im-001
+      - server-name: /v1/list-mediator-instance-managers
         uuid: mm-1-0-0-op-s-is-001
-      - server-name: /v1/create-pairing-definition
-        uuid: mm-1-0-0-op-s-is-002
-      - server-name: /v1/delete-pairing-definition
+      - server-name: /v1/provide-mediator-instance
+        uuid: mm-1-0-0-op-s-is-002      
+      - server-name: /v1/dismantle-mediator-instance
         uuid: mm-1-0-0-op-s-is-003
-      - server-name: /v1/export-pairing-definition
-        uuid: mm-1-0-0-op-s-is-004
-      - server-name: /v1/provide-mediator-for-this-device
-        uuid: mm-1-0-0-op-s-is-005
-      - server-name: /v1/dismantle-mediator-for-this-device
-        uuid: mm-1-0-0-op-s-is-006
-      - server-name: /v1/export-mediator-kind-list
-        uuid: mm-1-0-0-op-s-is-007
-      - server-name: /v1/export-mediator-device-instance-list
-        uuid: mm-1-0-0-op-s-is-008
-      ## TODO: All service requests to be complemented
     consequent-requests:
       - client-name: ExecutionAndTraceLog://v1/record-service-request
-        uuid: mm-1-0-0-op-c-bs-eatl-2-0-0-000
+        uuid: mm-1-0-0-op-c-bs-eatl-2-1-2-000
 
   - forwarding-name: OamRequestCausesLoggingRequest
     uuid: mm-1-0-0-op-fc-bm-003
@@ -119,26 +137,32 @@ forwardings:
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
+      # [all oam requests]
     consequent-requests:
       - client-name: OamLog://v1/record-oam-request
-        uuid: mm-1-0-0-op-c-bs-ol-2-0-0-000
+        uuid: mm-1-0-0-op-c-bs-ol-2-1-2-000
 
-  - forwarding-name: OamRequestCausesInquiryForAuthentication
-    uuid: mm-1-0-0-op-fc-bm-004
+  - forwarding-name: BasicAuthRequestCausesInquiryForAuthentication
+    uuid: mm-1-0-0-op-fc-bm-005
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
+        - server-name: /v1/inquire-basic-auth-approvals
+          uuid: mm-1-0-0-op-s-bm-012
         - server-name: /v1/inquire-oam-request-approvals
           uuid: mm-1-0-0-op-s-bm-005
       fc-port-update:
+        - server-name: /v1/inquire-basic-auth-approvals
+          uuid: mm-1-0-0-op-s-bm-012
         - server-name: /v1/inquire-oam-request-approvals
           uuid: mm-1-0-0-op-s-bm-005
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
+      # [all oam requests]
     consequent-requests:
-      - client-name: AdministratorAdministration://v1/approve-oam-request
-        uuid: mm-1-0-0-op-c-bs-aa-2-0-0-000
+      - client-name: AccessAdministration://v1/approve-basic-auth-request
+        uuid: mm-1-0-0-op-c-bs-aa-2-1-2-000
 
   - forwarding-name: PromptForBequeathingDataCausesRequestForBroadcastingInfoAboutServerReplacement
     uuid: mm-1-0-0-op-fc-bm-105
@@ -157,7 +181,7 @@ forwardings:
         uuid: mm-1-0-0-op-s-im-000
     consequent-requests:
       - client-name: RegistryOffice://v1/relay-server-replacement
-        uuid: mm-1-0-0-op-c-bm-ro-2-0-0-001
+        uuid: mm-1-0-0-op-c-bm-ro-2-1-2-001
 
   - forwarding-name: PromptForBequeathingDataCausesRequestForDeregisteringOfOldRelease
     uuid: mm-1-0-0-op-fc-bm-106
@@ -176,7 +200,7 @@ forwardings:
         uuid: mm-1-0-0-op-s-im-000
     consequent-requests:
       - client-name: RegistryOffice://v1/deregister-application
-        uuid: mm-1-0-0-op-c-bm-ro-2-0-0-002
+        uuid: mm-1-0-0-op-c-bm-ro-2-1-2-002
 
   - forwarding-name: PromptingNewReleaseForUpdatingServerCausesRequestForBroadcastingInfoAboutBackwardCompatibleUpdateOfOperation
     uuid: mm-1-0-0-op-fc-bm-107
@@ -195,7 +219,7 @@ forwardings:
         uuid: mm-1-0-0-op-s-bm-007
     consequent-requests:
       - client-name: RegistryOffice://v1/relay-operation-update
-        uuid: mm-1-0-0-op-c-bm-ro-2-0-0-003
+        uuid: mm-1-0-0-op-c-bm-ro-2-1-2-003
 
   - forwarding-name: ServiceRequestCausesLtpUpdateRequest
     uuid: mm-1-0-0-op-fc-bm-006
@@ -226,11 +250,17 @@ forwardings:
         uuid: mm-1-0-0-op-s-bm-009
       - server-name: /v1/update-operation-client
         uuid: mm-1-0-0-op-s-bm-011
+      - server-name: /v1/inquire-basic-auth-approvals
+        uuid: mm-1-0-0-op-s-bm-012
+      - server-name: /v1/update-client-of-subsequent-release
+        uuid: mm-1-0-0-op-s-bm-015
       - server-name: /v1/bequeath-your-data-and-die
         uuid: mm-1-0-0-op-s-im-000
+      - server-name: /v1/regard-mediator-instance-manager #[Query2]no links shall be created. Is it require ?
+        uuid: mm-1-0-0-op-s-is-000
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-ltp
-        uuid: mm-1-0-0-op-c-bm-alt-2-0-0-001
+        uuid: mm-1-0-0-op-c-bm-alt-2-1-2-001
 
   - forwarding-name: ServiceRequestCausesLtpDeletionRequest
     uuid: mm-1-0-0-op-fc-bm-007
@@ -245,9 +275,13 @@ forwardings:
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
+      - server-name: /v1/dispose-remainders-of-deregistered-application
+        uuid: mm-1-0-0-op-s-bm-013      
+      - server-name: /v1/disregard-mediator-instance-manager #[Query2]no links shall be created. Is it require ?
+        uuid: mm-1-0-0-op-s-is-001
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/delete-ltp-and-dependents
-        uuid: mm-1-0-0-op-c-bm-alt-2-0-0-002
+        uuid: mm-1-0-0-op-c-bm-alt-2-1-2-002
 
   - forwarding-name: ServiceRequestCausesFcUpdateRequest
     uuid: mm-1-0-0-op-fc-bm-008
@@ -262,9 +296,11 @@ forwardings:
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
+      - server-name: /v1/regard-mediator-instance-manager
+        uuid: mm-1-0-0-op-s-is-000
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-fc
-        uuid: mm-1-0-0-op-c-bm-alt-2-0-0-003
+        uuid: mm-1-0-0-op-c-bm-alt-2-1-2-003
 
   - forwarding-name: ServiceRequestCausesFcPortUpdateRequest
     uuid: mm-1-0-0-op-fc-bm-009
@@ -281,7 +317,7 @@ forwardings:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-fc-port
-        uuid: mm-1-0-0-op-c-bm-alt-2-0-0-004
+        uuid: mm-1-0-0-op-c-bm-alt-2-1-2-004
 
   - forwarding-name: ServiceRequestCausesFcPortDeletionRequest
     uuid: mm-1-0-0-op-fc-bm-010
@@ -297,10 +333,12 @@ forwardings:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/end-subscription
-        uuid: mm-1-0-0-op-s-bm-004
+        uuid: mm-1-0-0-op-s-bm-004      
+      - server-name: /v1/disregard-mediator-instance-manager
+        uuid: mm-1-0-0-op-s-is-001
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/delete-fc-port
-        uuid: mm-1-0-0-op-c-bm-alt-2-0-0-005
+        uuid: mm-1-0-0-op-c-bm-alt-2-1-2-005
 
   - forwarding-name: OamRequestCausesLtpUpdateRequest
     uuid: mm-1-0-0-op-fc-bm-011
@@ -317,7 +355,7 @@ forwardings:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-ltp
-        uuid: mm-1-0-0-op-c-bm-alt-2-0-0-001
+        uuid: mm-1-0-0-op-c-bm-alt-2-1-2-001
 
   - forwarding-name: OamRequestCausesLtpDeletionRequest
     uuid: mm-1-0-0-op-fc-bm-012
@@ -334,7 +372,7 @@ forwardings:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/delete-ltp-and-dependents
-        uuid: mm-1-0-0-op-c-bm-alt-2-0-0-002
+        uuid: mm-1-0-0-op-c-bm-alt-2-1-2-002
 
   - forwarding-name: OamRequestCausesFcUpdateRequest
     uuid: mm-1-0-0-op-fc-bm-013
@@ -351,7 +389,7 @@ forwardings:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-fc
-        uuid: mm-1-0-0-op-c-bm-alt-2-0-0-003
+        uuid: mm-1-0-0-op-c-bm-alt-2-1-2-003
 
   - forwarding-name: OamRequestCausesFcPortUpdateRequest
     uuid: mm-1-0-0-op-fc-bm-014
@@ -368,7 +406,7 @@ forwardings:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-fc-port
-        uuid: mm-1-0-0-op-c-bm-alt-2-0-0-004
+        uuid: mm-1-0-0-op-c-bm-alt-2-1-2-004
 
   - forwarding-name: OamRequestCausesFcPortDeletionRequest
     uuid: mm-1-0-0-op-fc-bm-015
@@ -385,40 +423,88 @@ forwardings:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/delete-fc-port
-        uuid: mm-1-0-0-op-c-bm-alt-2-0-0-005
+        uuid: mm-1-0-0-op-c-bm-alt-2-1-2-005
 
-  - forwarding-name: MediatorForThisDeviceRequestedByMountDevice
+  - forwarding-name: ProvideMediatorInstanceExportsListOfMediatorInstance
     uuid: mm-1-0-0-op-fc-is-001
-    forwarding-type: InvariantProcessSnippet
+    forwarding-type: ProcessSnippet
     management-requests:
       operation-client-update:
-        - server-name:
-          uuid:
+        - server-name: MediatorManager://v1/regard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-is-000
       fc-port-update:
-        - server-name:
       fc-port-deletion:
+        - server-name: MediatorManager://v1/disregard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-is-001
       operation-client-deletion:
     initiating-requests:
-      - server-name: MountingOrchestrator:///v1/mount-device
-        uuid: mm-1-0-0-0-op-s-is-mo-1-0-0-001
+      - server-name: MediatorManager://v1/provide-mediator-instance
+        uuid: mm-1-0-0-op-s-is-003
     consequent-requests:
-      - client-name:
-        uuid:
+      - client-name: MediatorInstanceManager://v1/list-mediator-instance-managers
+        uuid: mm-1-0-0-op-c-is-smim-1-0-0-000
+      - client-name: MediatorInstanceManager://v1/list-mediator-instance-managers
+        uuid: mm-1-0-0-op-c-is-hmim-1-0-0-000
+      - client-name: MediatorInstanceManager://v1/list-mediator-instance-managers
+        uuid: mm-1-0-0-op-c-is-emim-1-0-0-000
 
-  - forwarding-name: DismantleMediatorForThisDeviceRequestedByUnmountDevice
+  - forwarding-name: ProvideMediatorInstanceCreatesMediatorInstance
     uuid: mm-1-0-0-op-fc-is-002
+    forwarding-type: ProcessSnippet
+    management-requests:
+      operation-client-update:
+        - server-name: MediatorManager://v1/regard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-is-000
+      fc-port-update:
+      fc-port-deletion:
+        - server-name: MediatorManager://v1/disregard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-is-001
+      operation-client-deletion:
+    initiating-requests:
+      - server-name: MediatorManager://v1/provide-mediator-instance
+        uuid: mm-1-0-0-op-s-is-003
+    consequent-requests:
+      - client-name: MediatorInstanceManager://v1/provide-mediator-instance
+        uuid: mm-1-0-0-op-c-is-smim-1-0-0-001
+      - client-name: MediatorInstanceManager://v1/provide-mediator-instance
+        uuid: mm-1-0-0-op-c-is-hmim-1-0-0-001
+      - client-name: MediatorInstanceManager://v1/provide-mediator-instance
+        uuid: mm-1-0-0-op-c-is-emim-1-0-0-001
+
+  - forwarding-name: DismantleMediatorInstanceDeletesMediatorInstance
+    uuid: mm-1-0-0-op-fc-is-003
+    forwarding-type: ProcessSnippet
+    management-requests:
+      operation-client-update:
+        - server-name: MediatorManager://v1/regard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-is-000
+      fc-port-update:
+      fc-port-deletion:
+        - server-name: MediatorManager://v1/disregard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-is-001
+      operation-client-deletion:
+    initiating-requests:
+      - server-name: MediatorManager://v1/dismantle-mediator-instance
+        uuid: mm-1-0-0-op-s-is-003
+    consequent-requests:
+      - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance
+        uuid: mm-1-0-0-op-c-is-smim-1-0-0-002
+      - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance
+        uuid: mm-1-0-0-op-c-is-hmimxx-1-0-0-002
+      - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance
+        uuid: mm-1-0-0-op-c-is-emim-1-0-0-002
+
+  - forwarding-name: PromptForBequeathingRegardsMediatorVmToNewRelease
+    uuid: mm-1-0-0-op-fc-im-000
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
-        - server-name:
-          uuid:
       fc-port-update:
-        - server-name:
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
-      - server-name: MountingOrchestrator:///v1/unmount-device
-        uuid: mm-1-0-0-0-op-s-is-mo-1-0-0-002
+      - server-name: MediatorManager://v1/bequeath-your-data-and-die
+        uuid: mm-1-0-0-op-s-im-000
     consequent-requests:
-      - client-name:
-        uuid:
+      - client-name: NewRelease://v1/regard-mediator-instance-manager
+        uuid: mm-1-0-0-op-c-im-nr-1-0-0-000
