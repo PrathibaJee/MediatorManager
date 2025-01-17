@@ -8,7 +8,7 @@ The MediatorManager application will handle the creation/deletion of mediator in
 - LoadBalancing Mechanism 
 - Handling Engineering limits of the Mediators
 - ApplicationPattern version 2.1.2
-- Bequeathing process transfers the list of regarded VM from old to new release
+- Bequeathing process transfers the list of regarded MIM clients from old to new release
 
 ### Creates new mediator instances
 To create a new mediator instance , following steps will be performed
