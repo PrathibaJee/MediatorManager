@@ -1,39 +1,31 @@
 # MediatorManager Specification
-The MediatorManager application will handle the creation/deletion of mediator instance for the newly mounted/unmounted devices respectively. MountingOrchestrator application trigger the creation/deletion of a mediator instance via this application based on the activity performed by the field engineer through APT.  
-
-[Thorsten]: # (We cannot tell today, which applications will consume the api of the MM, in future. We should abstract the information here.)
+The MediatorManager application will handle the creation and deletion of mediator instances.  
 
 ### Features covered by MediatorManager version 1.0.0:
-- Stores information about MediatorInstanceManagers
-- Creates new mediator instances
-- Deletes existing mediator instances
-- LoadBalancing Mechanism 
-- Handling Engineering limits of the Mediators
+- Defining MediatorVM templates
+- Instantiating MediatorVMs from templates (incl. storing address of MediatorInstanceManagers)
+- Creating new mediator processes (while regarding the engineering limits defined in the MediatorVM templates)
+- Deleting existing mediator processes
+- Automated load balancing accross MediatorVMs
 - ApplicationPattern version 2.1.2
-- Bequeathing process transfers the list of regarded MIM clients from old to new release
+- Configuration data hand-over between application releases
 
-### Creates new mediator instances
-To create a new mediator instance , following steps will be performed
-- Get the list of MediatorInstanceManagers stored in the APPData file
+### Creating a new mediator process
+To create a new mediator process, following steps will be performed
+- Calculate the respective load on the MediatorVMs for the incoming device's model name
+- Chose the  MediatorVM with the lowest load
+- Compare this load with the engineering limit
+- Potentially create a mediator process on that MediatorVM
 
-[Thorsten]: # (Not sure whether we have the same understanding. The connection between the MM and xMIM is a communication connection alike between applications or between devices. Address information of the xMIM should be stored in the CONFIGfile not in an APPData.)
-
-- Filter the MediatorInstanceManagers those are defined for the incoming device's model name
-- If LoadBalancing is turned ON in the string-profile(allocationMethodType) then the MediatorInstanceManager with the least load considered and a instance will be created. 
-
-[Thorsten]: # (Understood, but what would happen, if load balancing is switched off? Does this alternative behavior make sense? Does it make sense to switch load balancing off?)
-
-### Deletes existing mediator instances
-To delete a mediator instance, following steps will be performed
+### Deletes existing mediator process
+To delete a mediator process, following steps will be performed
 - Get the list of MediatorInstanceManagers stored in the APPData file
 - Find the MediatorInstanceManager that has the same ip-address as the incoming "mediator-ip-address" of the device and delete the instance.
 
 [Thorsten]: # (Don't want to say that it would be a good idea, but at least want to put the idea on the table: Why not sending the delete to all xMIM? They can't delete what not exists and as an idempotent implementation they have to respond 204 anyway.)
 
-### Proposal for MediatorManager Future version:
-- A cyclic process shall check(for a fixed frequency) whether any of the MediatorInstanceManager exceeds its engineering limits. If so, an alarm shall be raised to the upcoming AlarmManagement application. So that proactively measures shall be taken.
-
-[Thorsten]: # (If the MM would be the only instance allowed to address the xMIM services, there would be no exceeding of the engineering limits, except the engineering limit would be lowered during operation. If this would happen, I would expect the load balancer to take care for keeping the limites. An alarm only to be send, if this would not be feasible.)
+### Proposal for future versions:
+- Defining threshold cross alarms for informing about almost reaching the engineering limit shall be considered. 
 
 ### Dependencies
 - TAC version 2.1.2

@@ -437,6 +437,21 @@ paths:
                 default:
                   $ref: '#/components/responses/responseForErroredServiceRequests'
 
+# [Thorsten] Proposed additional service: /v1/create-mediator-vm-template
+# requestBody
+# required
+#   - mediator-vm-template-name
+#   - vendor-name
+#   - supported-device-kind-list
+#   - engineering-limit
+#   - provide-mediator-instance-operation-name
+#   - dismantle-mediator-instance-operation-name
+#   - list-mediator-instance-operation-name
+# responses: 204
+
+# [Thorsten] Proposed additional service: /v1/delete-mediator-vm-template
+# [Thorsten] Proposed additional service: /v1/list-mediator-vm-templates
+
   /v1/regard-mediator-instance-manager:
     post:
       operationId: regardMediatorInstanceManager
@@ -453,16 +468,40 @@ paths:
               type: object
               required:
                 - application-name
+# [Thorsten] Proposed renaming: mediator-instance-name
+
                 - release-number
+# [Thorsten] Proposed renaming: mediator-instance-release-number
+
+# [Thorsten] Propose to add mediator-vm-template-name
+
                 - provide-mediator-instance-operation
+# [Thorsten] Propose to take that from template 
+
                 - dismantle-mediator-instance-operation
+# [Thorsten] Propose to take that from template 
+
                 - list-mediator-instance-operation
+# [Thorsten] Propose to take that from template 
+
                 - protocol
+# [Thorsten] Proposed renaming: mediator-instance-manager-protocol
+
                 - address
+# [Thorsten] Proposed renaming: mediator-instance-manager-ip-address
+
                 - port
+# [Thorsten] Proposed renaming: mediator-instance-manager-port
+
                 - vendor-name
+# [Thorsten] Propose to take that from template 
+
                 - supported-device-kind-list
+# [Thorsten] Propose to take that from template 
+
                 - engineering-limits
+# [Thorsten] Propose to take that from template 
+
               properties:
                 application-name:
                   type: string
