@@ -1,8 +1,9 @@
-@startuml DeleteMediatorVmTemplate
+@startuml MountNameAndDeviceIPDoesnotExist
 skinparam responseMessageBelowArrow true
 
 title
-MediatorManager /v1/provide-mediator-instance
+MediatorManager /v1/provide-mediator-instance 
+<back:cadetblue><size:18>MountName And DeviceIP does not exist already</size></back>
 end title
 
 participant "MountingOrchestrator" as MO
@@ -53,13 +54,8 @@ group To find the available mediator VMs in MM for the provided device-kind-name
         "engineering-limit" : 3600,
         <b>"paired-mediator-vm-list" : ["vmeric1"]
         },
-        {
-        "mediator-vm-template-name" : "SiaeAGSTemplate",
-        "vendor-name" : "SIAE",
-        "supported-device-kind" : ["AGS20","AGS20L"],
-        "engineering-limit" : 3600,
-        <b>"paired-mediator-vm-list" : ["vmSiae1"]
-        }
+        <b> . . .
+        <b> . . .
         ]
     end note
 

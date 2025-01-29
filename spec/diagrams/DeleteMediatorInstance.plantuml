@@ -1,15 +1,12 @@
-@startuml DeleteMediatorVmTemplate
+@startuml DeleteMediatorInstance
 skinparam responseMessageBelowArrow true
 
 title
-MediatorManager /v1/provide-mediator-instance
-<back:cadetblue><size:18>MountName already exist With a different device-iP</size></back>
-<back:cadetblue><size:18>OR</size></back>
-<back:cadetblue><size:18>device-ip already in use</size></back>
+MediatorManager /v1/delete-mediator-instance
 end title
 
 participant "MountingOrchestrator" as MO
-participant "MediatorManager://v1/provide-mediator-instance" as MM
+participant "MediatorManager://v1/delete-mediator-instance" as MM
 database "MediatorManager:APPDataFile" as AppData
 participant "Ericsson MediatorInstanceManager" as EMIM
 collections "All Other MediatorInstanceManager " as AMIM
@@ -32,14 +29,22 @@ end note
 MM -> EMIM : /v1/list-mediator-instances
 
 MM -> AMIM : /v1/list-mediator-instances
-group mount-name already exist with a different device-ip
+
 hnote over MM #Pink
-    If mount-name already exist with a different device-ip
-end note
-rnote over MM #GreenYellow
-    yes
+    mount-name exist
 end note
 
+rnote over MM #OrangeRed
+    No
+end note
+
+MM -> MO : 204 NoContent
+
+rnote over MM #GreenYellow
+    Yes
+end note
+
+group mount-name already exist
 MM -> Device : PING the existing device-ip
 hnote over MM #Pink
     If ping is successful for the existing device-ip?
@@ -48,29 +53,40 @@ rnote over MM #OrangeRed
     yes
 end note
 MM -> MO : 5xx (operational will block)
-end
+
 rnote over MM #GreenYellow
     No
 end note
 
-group device-ip already assigned to another mount-name
-hnote over MM #Pink
-    If incoming device-ip already assigned to another mount-name?
+rnote over MM #LightSteelBlue
+    Formulate the request /v1/delete-mediator-instance
+    for the mediator vm, where the instance already exist
 end note
-rnote over MM #OrangeRed
+
+MM -> EMIM : /v1/delete-mediator-instance
+note right MM #LightGrey
+    {
+  "device-name": "513250011"
+}
+end note
+
+rnote over EMIM #Pink
+problem in deleting the instance ?
+end note
+rnote over EMIM #OrangeRed
     yes
 end note
-MM -> MO : 4xx IP Address occupied by <existing mount-name>
-end
-rnote over MM #GreenYellow
+EMIM -> MM : 500 InternalServerError
+MM -> MO : 5?? upstream error ??
+
+rnote over EMIM #GreenYellow
     No
 end note
+EMIM -> MM : 204 OK
 
 
-== Further steps to create mediator instance from the diagram MountNameAndDeviceIPDoesnotExist.png ==
+MM -> MO : 204 OK
+end
 deactivate MM
-MM -> MO
-== ==
-
 
 @enduml

@@ -2,43 +2,75 @@
 skinparam responseMessageBelowArrow true
 
 title
-MediatorManager /v1/delete-mediator-vm-template
+MediatorManager /v1/provide-mediator-instance
+<back:cadetblue><size:18>MountName and device-iP combination already exist</size></back>
 end title
 
-participant "OperationsTeam" as OT
-participant "MediatorManager://v1/delete-mediator-vm-template" as MM
+participant "MountingOrchestrator" as MO
+participant "MediatorManager://v1/provide-mediator-instance" as MM
 database "MediatorManager:APPDataFile" as AppData
+participant "Ericsson MediatorInstanceManager" as EMIM
+collections "All Other MediatorInstanceManager " as AMIM
 
 
-OT -> MM : 
-note right OT #PaleGreen
-    { mediator-vm-template-name : 
-    <b>"EricssonMLTemplate"
+MO -> MM : 
+note right MO #PaleGreen
+    { 
+      mount-name: '513250011',
+      device-ip: '1.2.3.4',
+      device-model: 'MLTN'
     }
 end note
 activate MM #LightSteelBlue
 
- 
-AppData --\\o MM : <b>Retrieve the "EricssonMLTemplate"
-note right MM #LightSteelBlue
+rnote over MM #LightSteelBlue
+    lists all the mediator instances
+end note
+
+MM -> EMIM : /v1/list-mediator-instances
+
+MM -> AMIM : /v1/list-mediator-instances
+group mount-name already exist with the incoming device-ip
+hnote over MM #Pink
+    If mount-name already exist with the incoming device-ip
+end note
+rnote over MM #GreenYellow
+    yes
+end note
+
+rnote over MM #LightSteelBlue
+    Formulate the request /v1/provide-mediator-instance
+    for the mediator vm where the instance already exist
+end note
+
+MM -> EMIM : /v1/provide-mediator-instance
+note right MM #LightGrey
     {
-    "mediator-vm-template-name" : "EricssonMLTemplate",
-    "vendor-name" : "Ericsson",
-    "supported-device-kind" : ["MLTN","ML6600"],
-    "engineering-limit" : 3600,
-    <b>"paired-mediator-vm-list" : ["vmeric1"]
-    }
+  "device-name": "513250011",
+  "device-ip-address": "1.2.3.4",
+  "device-kind-name": "MLTN"
+}
 end note
 
-MM --> MM : 
-hnote over MM #LightSteelBlue
-    <b>Check if the template is used by any mediator vm ?
-    In this example , 
-    yes this template is used by the vm "vmeric1" 
-    <b>"paired-mediator-vm-list" : ["vmeric1"]
+EMIM -> MM : 200 OK
+note right MM #LightGray
+        {
+        "mediator-instance-ip-address": '10.118.132.1'
+        "mediator-instance-netconf-port": 1
+        }
 end note
 
-MM -> OT : 409 Conflict
+
+MM -> MO : 200 OK
+note right MO #LightGray
+        {
+        "mediator-instance-ip-address": '10.118.132.1'
+        "mediator-instance-netconf-port": 1
+        }
+end note
+== Shall we also need to cover scenarios where EMIM sends responseCode!=200? ==
+== ==
+
 deactivate MM
 
 @enduml
