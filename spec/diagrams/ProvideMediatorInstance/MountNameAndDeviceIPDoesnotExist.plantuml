@@ -129,7 +129,7 @@ group create mediator instance (If mediator instance creation fails, then repeat
 
         MM -x EMIM : /v1/provide-mediator-instance
         EMIM -> MM : 404 NotFound
-        MM -> MO : 531??
+        MM -> MO : 503?
 
         MM -> EMIM : /v1/provide-mediator-instance
         activate EMIM #Grey
@@ -140,7 +140,7 @@ group create mediator instance (If mediator instance creation fails, then repeat
         No
         end note
         EMIM -> MM : 401
-        MM -> MO : 531
+        MM -> MO : 531?
 
         rnote over EMIM #GreenYellow
         Yes
@@ -152,7 +152,7 @@ group create mediator instance (If mediator instance creation fails, then repeat
         NO
         end note
         EMIM -> MM : !=200
-        MM -> MO : 5xx
+        MM -> MO : 532?
 
         rnote over EMIM #GreenYellow
         Yes
