@@ -1,4 +1,4 @@
-@startuml DeleteMediatorVmTemplate
+@startuml MountNameExistWithDifferentIP
 skinparam responseMessageBelowArrow true
 
 title
