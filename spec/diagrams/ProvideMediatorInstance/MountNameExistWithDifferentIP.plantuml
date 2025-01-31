@@ -47,7 +47,7 @@ end note
 rnote over MM #OrangeRed
     yes
 end note
-MM -> MO : 5xx (operational will block)
+MM -> MO : 409 conflict?
 end
 rnote over MM #GreenYellow
     No
@@ -60,7 +60,7 @@ end note
 rnote over MM #OrangeRed
     yes
 end note
-MM -> MO : 4xx IP Address occupied by <existing mount-name>
+MM -> MO : 409 conflict?
 end
 rnote over MM #GreenYellow
     No
