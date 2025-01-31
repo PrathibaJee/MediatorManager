@@ -70,9 +70,9 @@ servers:
           uuid: mm-1-0-0-op-s-im-003
         - operation-name: /v1/list-mediator-instance-managers
           uuid: mm-1-0-0-op-s-is-001        
-        - operation-name: /v1/provide-mediator-instance
+        - operation-name: /v1/create-mediator-instance
           uuid: mm-1-0-0-op-s-is-001      
-        - operation-name: /v1/dismantle-mediator-instance
+        - operation-name: /v1/delete-mediator-instance
           uuid: mm-1-0-0-op-s-is-002
 
   http-server:
