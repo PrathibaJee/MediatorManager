@@ -5,3 +5,4 @@ First ideas:
 - [Overview MediatorManager](./MediatorManager.PNG)
 - [Overview MountingOrchestrator](./MountingOrchestrator.PNG)
 - [Papyrus Export](./MediatorManagement_1.0.0-tsp.230327.1825.zip)
+- [Operation by LoadSharing](./DraftingOperationSupportByLoadBalancer.md)

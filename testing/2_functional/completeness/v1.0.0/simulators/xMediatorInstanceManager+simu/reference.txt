@@ -1,0 +1,11 @@
+The xMediatorInstanceManager+simu.yaml simulator has been created and used for testing the 
+testcase collection for completeness of the xMediatorInstanceManager during its development.  
+
+It could be used for creating a sandbox while testing the MediatorManager for completeness, too.  
+
+For avoiding decoupling from potential correction or expansion of the simulator, just a reference
+instead of a copy is provided here.
+
+Please, find it here for creating an own copy before putting own testcase of the MediatorManager on top:
+
+https://github.com/openBackhaul/MediatorInstanceManager/tree/develop/testing/2_functional/completeness/v0.0.2/simulators
