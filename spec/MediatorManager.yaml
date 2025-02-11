@@ -1870,6 +1870,7 @@ paths:
               type: object
               required:
                 - device-name
+                - mediator-instance-ip-address
               properties:
                 device-name:                  
                   type: string
