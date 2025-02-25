@@ -445,102 +445,102 @@ paths:
                 - $ref: '#/components/parameters/x-correlator'
                 - $ref: '#/components/parameters/trace-indicator'
                 - $ref: '#/components/parameters/customer-journey'
-          requestBody:
-            required: true
-            content:
-              application/json:
-                schema:
-                  type: object
-                  required:
-                    - mediator-vm-template-name
-                    - vendor-name
-                    - supported-device-kind-list
-                    - engineering-limit
-                    - provide-mediator-instance-operation-name
-                    - dismantle-mediator-instance-operation-name
-                    - list-mediator-instance-operation-name
-                  properties:
-                    mediator-vm-template-name:
-                      type: string
-                      minLength: 6
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      required:
+                        - mediator-vm-template-name
+                        - vendor-name
+                        - supported-device-kind-list
+                        - engineering-limit
+                        - provide-mediator-instance-operation-name
+                        - dismantle-mediator-instance-operation-name
+                        - list-mediator-instance-operation-name
+                      properties:
+                        mediator-vm-template-name:
+                          type: string
+                          minLength: 6
+                          description: >
+                            'Name of a mediator vm template that shall be created in the APPData.This attribute has the function of a key attribute.'
+                        supported-device-kind-list:
+                          description: 'Supported device kinds of the Mediator vm that shall be added to the {$mediator-vm-template-name} in APPdata'
+                          type: array
+                          items:
+                            type: string 
+                        engineering-limit:  
+                          description: 'Number of instances supported by the Mediator vm that shall be added to the {$mediator-vm-template-name} in APPdata'
+                          type: integer
+                          # Forwarding shall be introduced to delete instances (random mountpoints shall be considered)
+                        provide-mediator-instance-operation:
+                          type: string
+                          minLength: 6
+                          description: >
+                            'Operation to create a new mediator instance that shall be added to the {$mediator-vm-template-name} in APPdata'
+                        dismantle-mediator-instance-operation:
+                          type: string
+                          minLength: 6
+                          description: >
+                            'Operation to dismantle an existing mediator instance that shall be added to the {$mediator-vm-template-name} in APPdata'
+                        list-mediator-instance-operation:
+                          type: string
+                          minLength: 6
+                          description: >
+                            'operation to list the existing mediator instances that shall be added to the {$mediator-vm-template-name} in APPdata'
+                      example:
+                        mediator-vm-template-name: 'EricssonMLTemplate'
+                        supported-device-kind-list: ['MLTN','ML6600']
+                        engineering-limit: 3600
+                        provide-mediator-instance-operation-name: '/v1/provide-mediator-instance'
+                        dismantle-mediator-instance-operation-name: '/v1/dismantle-mediator-instance'
+                        list-mediator-instance-operation-name: '/v1/list-mediator-instances'
+              responses:
+                '204':
+                  description: 'Mediator vm template stored'
+                  headers:
+                    x-correlator:
+                      schema:
+                        type: string
+                        example: '550e8400-e29b-11d4-a716-446655440000'
+                      description: 'UUID for the service execution flow that allows to correlate requests and responses. Its value must be identical at the response compared with its corresponding request'
+                    exec-time:
+                      schema:
+                        type: integer
+                        example: 1100
+                      description: 'Value written by the service provider, reporting the total elapsed time for the execution, including all the additional processing needed to retrieve the data from the backend service. Expressed in milliseconds'
+                    backend-time:
+                      schema:
+                        type: integer
+                        example: 850
+                      description: 'Value written by the service provider, reporting the elapsed time for data retrieval from the backend (service invocation, database access…). Expressed in milliseconds'
+                    life-cycle-state:
+                      schema:
+                        type: string
+                        enum:
+                          - 'EXPERIMENTAL'
+                          - 'OPERATIONAL'
+                          - 'DEPRECATED'
+                          - 'OBSOLETE'
+                          - 'UNKNOWN'
+                          - 'NOT_YET_DEFINED'
+                        example: 'EXPERIMENTAL'
                       description: >
-                        'Name of a mediator vm template that shall be created in the APPData.This attribute has the function of a key attribute.'
-                    supported-device-kind-list:
-                      description: 'Supported device kinds of the Mediator vm that shall be added to the {$mediator-vm-template-name} in APPdata'
-                      type: array
-                      items:
-                        type: string 
-                    engineering-limit:  
-                      description: 'Number of instances supported by the Mediator vm that shall be added to the {$mediator-vm-template-name} in APPdata'
-                      type: integer
-                      # Forwarding shall be introduced to delete instances (random mountpoints shall be considered)
-                    provide-mediator-instance-operation:
-                      type: string
-                      minLength: 6
-                      description: >
-                        'Operation to create a new mediator instance that shall be added to the {$mediator-vm-template-name} in APPdata'
-                    dismantle-mediator-instance-operation:
-                      type: string
-                      minLength: 6
-                      description: >
-                        'Operation to dismantle an existing mediator instance that shall be added to the {$mediator-vm-template-name} in APPdata'
-                    list-mediator-instance-operation:
-                      type: string
-                      minLength: 6
-                      description: >
-                        'operation to list the existing mediator instances that shall be added to the {$mediator-vm-template-name} in APPdata'
-                  example:
-                    mediator-vm-template-name: 'EricssonMLTemplate'
-                    supported-device-kind-list: ['MLTN','ML6600']
-                    engineering-limit: 3600
-                    provide-mediator-instance-operation-name: '/v1/provide-mediator-instance'
-                    dismantle-mediator-instance-operation-name: '/v1/dismantle-mediator-instance'
-                    list-mediator-instance-operation-name: '/v1/list-mediator-instances'
-          responses:
-            '204':
-              description: 'Mediator vm template stored'
-              headers:
-                x-correlator:
-                  schema:
-                    type: string
-                    example: '550e8400-e29b-11d4-a716-446655440000'
-                  description: 'UUID for the service execution flow that allows to correlate requests and responses. Its value must be identical at the response compared with its corresponding request'
-                exec-time:
-                  schema:
-                    type: integer
-                    example: 1100
-                  description: 'Value written by the service provider, reporting the total elapsed time for the execution, including all the additional processing needed to retrieve the data from the backend service. Expressed in milliseconds'
-                backend-time:
-                  schema:
-                    type: integer
-                    example: 850
-                  description: 'Value written by the service provider, reporting the elapsed time for data retrieval from the backend (service invocation, database access…). Expressed in milliseconds'
-                life-cycle-state:
-                  schema:
-                    type: string
-                    enum:
-                      - 'EXPERIMENTAL'
-                      - 'OPERATIONAL'
-                      - 'DEPRECATED'
-                      - 'OBSOLETE'
-                      - 'UNKNOWN'
-                      - 'NOT_YET_DEFINED'
-                    example: 'EXPERIMENTAL'
-                  description: >
-                    'Life cycle state of the consumed service
-                    from [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-op-s-im-000/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-configuration/life-cycle-state]'
-            '400':
-              $ref: '#/components/responses/responseForErroredServiceRequests'
-            '401':
-              $ref: '#/components/responses/responseForErroredServiceRequests'
-            '403':
-              $ref: '#/components/responses/responseForErroredServiceRequests'
-            '404':
-              $ref: '#/components/responses/responseForErroredServiceRequests'
-            '500':
-              $ref: '#/components/responses/responseForErroredServiceRequests'
-            default:
-              $ref: '#/components/responses/responseForErroredServiceRequests'
+                        'Life cycle state of the consumed service
+                        from [/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-op-s-im-000/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-configuration/life-cycle-state]'
+                '400':
+                  $ref: '#/components/responses/responseForErroredServiceRequests'
+                '401':
+                  $ref: '#/components/responses/responseForErroredServiceRequests'
+                '403':
+                  $ref: '#/components/responses/responseForErroredServiceRequests'
+                '404':
+                  $ref: '#/components/responses/responseForErroredServiceRequests'
+                '500':
+                  $ref: '#/components/responses/responseForErroredServiceRequests'
+                default:
+                  $ref: '#/components/responses/responseForErroredServiceRequests'
         PromptForBequeathingRegardsMediatorInstanceManagerToNewRelease:
           url: #[/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-ro-2-1-2-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]://[/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-ro-2-1-2-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name or /core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-ro-2-1-2-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-tcp-c-ro-2-1-2-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=mm-1-0-0-op-c-bm-ro-2-1-2-001/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
             post:
@@ -1157,6 +1157,7 @@ paths:
           $ref: '#/components/responses/responseForErroredServiceRequests'
         default:
           $ref: '#/components/responses/responseForErroredServiceRequests'
+          
   /v1/disregard-mediator-instance-manager:
     parameters:
       - $ref: '#/components/parameters/user'
@@ -1808,7 +1809,7 @@ paths:
                 - $ref: '#/components/parameters/originator'
                 - $ref: '#/components/parameters/x-correlator'
                 - $ref: '#/components/parameters/trace-indicator'
-                - $ref: '#/components/parameters/customer-journey
+                - $ref: '#/components/parameters/customer-journey'
               requestBody:
                 required: true
                 content:
@@ -1892,7 +1893,7 @@ paths:
                 - $ref: '#/components/parameters/originator'
                 - $ref: '#/components/parameters/x-correlator'
                 - $ref: '#/components/parameters/trace-indicator'
-                - $ref: '#/components/parameters/customer-journey
+                - $ref: '#/components/parameters/customer-journey'
               responses:
                 '200':
                   description: 'Mediators listed'
@@ -1939,7 +1940,7 @@ paths:
                             device-kind-name: 'AGS_20'
                             mediator-instance-ip-address: '10.118.132.1'
                             mediator-instance-netconf-port: 1
-                            device-ip-address: '10.118.133.1''
+                            device-ip-address: '10.118.133.1'
                 '400':
                   $ref: '#/components/responses/responseForErroredServiceRequests'
                 '401':
@@ -1965,7 +1966,7 @@ paths:
                 - $ref: '#/components/parameters/originator'
                 - $ref: '#/components/parameters/x-correlator'
                 - $ref: '#/components/parameters/trace-indicator'
-                - $ref: '#/components/parameters/customer-journey
+                - $ref: '#/components/parameters/customer-journey'
               requestBody:
                 required: true
                 content:
@@ -2036,7 +2037,7 @@ paths:
                 - $ref: '#/components/parameters/originator'
                 - $ref: '#/components/parameters/x-correlator'
                 - $ref: '#/components/parameters/trace-indicator'
-                - $ref: '#/components/parameters/customer-journey
+                - $ref: '#/components/parameters/customer-journey'
               requestBody:
                 required: true
                 content:

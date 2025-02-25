@@ -425,6 +425,75 @@ forwardings:
       - client-name: ApplicationLayerTopology://v1/delete-fc-port
         uuid: mm-1-0-0-op-c-bm-alt-2-1-2-005
 
+  - forwarding-name: createMediatorVmTemplateManagesMediatorInstances.RetrievesListOfMediatorInstances
+    uuid: mm-1-0-0-op-fc-is-200
+    forwarding-type: ProcessSnippet
+    management-requests:
+      operation-client-update:
+        - server-name: MediatorManager://v1/regard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-im-002
+      fc-port-update:
+      fc-port-deletion:
+        - server-name: MediatorManager://v1/disregard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-im-003
+      operation-client-deletion:
+    initiating-requests:
+      - server-name: MediatorManager://v1/create-mediator-vm-template
+        uuid: mm-1-0-0-op-s-is-000
+    consequent-requests:
+      - client-name: MediatorInstanceManager://v1/list-mediator-instance-managers
+        uuid: mm-1-0-0-op-c-is-smim-1-0-0-000
+      - client-name: MediatorInstanceManager://v1/list-mediator-instance-managers
+        uuid: mm-1-0-0-op-c-is-hmim-1-0-0-000
+      - client-name: MediatorInstanceManager://v1/list-mediator-instance-managers
+        uuid: mm-1-0-0-op-c-is-emim-1-0-0-000
+
+  - forwarding-name: createMediatorVmTemplateManagesMediatorInstances.DeletesExistingMediatorInstance
+    uuid: mm-1-0-0-op-fc-is-201
+    forwarding-type: ProcessSnippet
+    management-requests:
+      operation-client-update:
+        - server-name: MediatorManager://v1/regard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-im-002
+      fc-port-update:
+      fc-port-deletion:
+        - server-name: MediatorManager://v1/disregard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-im-003
+      operation-client-deletion:
+    initiating-requests:
+      - server-name: MediatorManager://v1/create-mediator-vm-template
+        uuid: mm-1-0-0-op-s-is-000
+    consequent-requests:
+      - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance
+        uuid: mm-1-0-0-op-c-im-smim-1-0-0-001
+      - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance
+        uuid: mm-1-0-0-op-c-im-hmim-1-0-0-001
+      - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance
+        uuid: mm-1-0-0-op-c-im-emim-1-0-0-001
+
+  - forwarding-name: RequestForManagingInstancesAtMediatorInstanceManagerCausesSendingRecordsToEatl
+    uuid: mm-1-0-0-op-fc-is-202
+    forwarding-type: ProcessSnippet
+    management-requests:
+      operation-client-update:
+        - server-name: MediatorManager://v1/regard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-is-000
+      fc-port-update:
+      fc-port-deletion:
+        - server-name: MediatorManager://v1/disregard-mediator-instance-manager
+          uuid: mm-1-0-0-op-s-is-001
+      operation-client-deletion:
+    initiating-requests:
+    - server-name: MediatorManager://v1/create-mediator-vm-template
+        uuid: mm-1-0-0-op-s-is-000
+      - server-name: MediatorManager://v1/provide-netconf-interface
+        uuid: mm-1-0-0-op-s-is-002
+    - server-name: MediatorManager://v1/dismantle-netconf-interface
+        uuid: mm-1-0-0-op-s-is-003
+    consequent-requests:
+      - client-name: ExecutionAndTraceLog://v1/record-service-request
+        uuid: mm-1-0-0-op-c-bs-eatl-2-1-2-000
+
   - forwarding-name: ProvideNetconfInterfacePreparesConnectionAtDevices
     uuid: mm-1-0-0-op-fc-is-001
     forwarding-type: InvariantProcessSnippet
@@ -536,7 +605,7 @@ forwardings:
         uuid: mm-1-0-0-op-c-im-emim-1-0-0-000
 
   - forwarding-name: RequestForDeletingMediatorInstanceCausesMediatorInstanceDeletion
-    uuid: mm-1-0-0-op-fc-is-007
+    uuid: mm-1-0-0-op-fc-is-107
     forwarding-type: ProcessSnippet
     management-requests:
       operation-client-update:
