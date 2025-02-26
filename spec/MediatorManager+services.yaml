@@ -133,7 +133,7 @@ clients:
         basic:
         individual:
           - operation-name: /v1/create-mediator-vm-template
-            uuid: mm-1-0-0-op-c-im-nr-1-0-0-001
+            uuid: mm-1-0-0-op-c-is-nr-1-0-0-000
 
   - http-client:
       application-name: RegistryOffice

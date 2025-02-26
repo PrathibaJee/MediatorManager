@@ -10,7 +10,7 @@ participant "MM://v1/create-mediator-vm-template" as MM
 database "MM:APPDataFile" as AppData
 database "MM:ConfigFile" as ConfigFile
 participant "Paired MIM://v1/list-mediator-instances" as MIMList
-participant "Paired XMIM://v1/delete-mediator-instance" as MIMDel
+participant "Paired XMIM://v1/dismantle-mediator-instance" as MIMDel
 participant "EATL://v1/record-service-request" as MIMEatl
 
 OT -> MM : 
@@ -25,7 +25,7 @@ note right OT
         "list-mediator-instance-operation-name" :"/v1/list-mediator-instance"
     }
 end note
-activate MM
+activate MM #LightSteelBlue
 
 AppData -> MM : Retrieves list of existing mediator VM templates
 
@@ -47,7 +47,8 @@ end note
 
 group Existing mediator VM template updation
     MM -> AppData :  updates existing mediator vm template
-
+    MM -> OT : 204 NoContent
+deactivate MM
     note over MM
         If template has any paired-VMs
     end note
@@ -67,22 +68,24 @@ group Existing mediator VM template updation
        If template has any paired-VMs
     end note
 
-    loop Repeat for all the paired vms
+    group createMediatorVmTemplateManagesMediatorInstances [Repeat for all the paired vms]
+        group RetrievesListOfMediatorInstances
         MM -> MIMList :
-        MM --> MIMEatl : Logs the client request to MIM
+        MM --> MIMEatl : Logs the xMIM client request to EATL
         note over MM
             If list.length > engineering-limit
         end note
+        end
         note over MM
             <b>numberOfInstancesBeyondThreshold</b> = list.length - engineering-limit
             Randomly select numberOfInstancesBeyondThreshold instances
         end note
-        loop Repeat for all random instances
+        group DeletesExistingMediatorInstance [Repeat for all random instances]
             MM -> MIMDel : 
-            MM --> MIMEatl : Logs the client request to MIM
+            MM --> MIMEatl : Logs the xMIM client request to EATL
         end note
         MM -> MIMList :
-        MM --> MIMEatl : Logs the client request to MIM
+        MM --> MIMEatl : Logs the xMIM client request to EATL
         note over MM
             If still list.length > engineering-limit
             Repeat the loop again to delete Mediator Instances 
@@ -90,7 +93,5 @@ group Existing mediator VM template updation
         end note
     end    
 end
-
-deactivate MM
 
 @enduml

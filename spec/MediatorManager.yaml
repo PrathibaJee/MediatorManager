@@ -713,7 +713,6 @@ paths:
                 engineering-limit:  
                   description: 'Number of instances supported by the Mediator vm that shall be added to the {$mediator-vm-template-name} in APPdata'
                   type: integer
-                  # Forwarding shall be introduced to delete instances (random mountpoints shall be considered)
                 provide-mediator-instance-operation:
                   type: string
                   minLength: 6
@@ -1156,8 +1155,7 @@ paths:
         '500':
           $ref: '#/components/responses/responseForErroredServiceRequests'
         default:
-          $ref: '#/components/responses/responseForErroredServiceRequests'
-          
+          $ref: '#/components/responses/responseForErroredServiceRequests'       
   /v1/disregard-mediator-instance-manager:
     parameters:
       - $ref: '#/components/parameters/user'
