@@ -1841,17 +1841,6 @@ paths:
                 device-model:
                   description: 'model of the device'
                   type: string
-                  enum:
-                    - 'MLTN'
-                    - 'ML6600'
-                    - 'ML6352'
-                    - 'AGS20'
-                    - 'AGS20L'
-                    - 'ALCP2E'
-                    - 'ALFO'
-                    - 'RTN-950'
-                    - 'RTN-905'
-                    - 'RTN-380A'     
               example:
                 mount-name: '513250019'
                 device-ip: '127.0.0.1'
