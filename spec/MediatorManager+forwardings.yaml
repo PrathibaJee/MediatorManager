@@ -118,7 +118,7 @@ forwardings:
         uuid: mm-1-0-0-op-s-is-003
       - server-name: /v1/provide-netconf-interface
         uuid: mm-1-0-0-op-s-is-004      
-      - server-name: /v1/dismantle-mediator-instance
+      - server-name: /v1/dismantle-netconf-instance
         uuid: mm-1-0-0-op-s-is-005
       - server-name: /v1/create-mediator-vm-template
         uuid: mm-1-0-0-op-s-is-000
@@ -566,7 +566,7 @@ forwardings:
           uuid: mm-1-0-0-op-s-im-002
       operation-client-deletion:
     initiating-requests:
-      - server-name: MediatorManager://v1/dismantle-mediator-instance
+      - server-name: MediatorManager://v1/dismantle-netconf-instance
         uuid: mm-1-0-0-op-s-is-005
     consequent-requests:
       - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance
@@ -625,7 +625,7 @@ forwardings:
           uuid: mm-1-0-0-op-s-im-002
       operation-client-deletion:
     initiating-requests:
-      - server-name: MediatorManager://v1/dismantle-mediator-instance
+      - server-name: MediatorManager://v1/dismantle-netconf-instance
         uuid: mm-1-0-0-op-s-is-005
     consequent-requests:
       - client-name: MediatorInstanceManager://v1/dismantle-mediator-instance

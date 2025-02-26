@@ -17,7 +17,7 @@ note right OT
 end note
 activate MM
 
-== case 1 : Template doesnot exist ==
+== case 1 : Mediator VM Template doesnot exist ==
 AppData -> MM : Retrieves list of existing mediator VM templates
 note left APPDataFile
 [
@@ -43,7 +43,7 @@ end note
 
 MM --> OT : 204 NoContent
 
-== case 2 : Template already exist with empty paired-mediator-vm-list ==
+== case 2 : Mediator VM Template already exist with empty paired-mediator-vm-list ==
 AppData -> MM : Retrieves list of existing mediator VM templates
 note left APPDataFile
 [
@@ -68,7 +68,7 @@ note right MM
 end note
 MM --> OT : 204 NoContent
 
-== case 3 : Template already exist with paired-mediator-vm-list ==
+== case 3 : Mediator VM Template already exist with paired-mediator-vm-list ==
 AppData -> MM : Retrieves list of existing mediator VM templates
 note left APPDataFile
 [
